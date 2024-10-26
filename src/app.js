@@ -26,10 +26,30 @@ app.put("/test",(req,res)=>{
     res.send("put the data");
 })
 
-app.get("/user",(req,res)=>{
-    console.log(req.query);
-    res.send("sucessfull");
-})
+app.get("/user",[(req,res,next)=>{
+    console.log("Hello world"); 
+    // next();
+
+},
+(req,res,next)=>{
+     console.log("Hello world");
+    next();
+
+},
+(req,res,next)=>{
+    console.log("Hello world");
+    next();
+
+}],
+(req,res,next)=>{
+    console.log("Hello world");
+    res.send("4th conncetion");
+}
+)
+// app.get("/user",(req,res)=>{
+//     console.log(req.query);
+//     res.send("sucessfull");
+// })
 
 // app.get("/user/:userId/:name",(req,res)=>{
 //     console.log(req.params);
