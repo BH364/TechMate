@@ -1,0 +1,21 @@
+{
+  "name": "devtinder-backend",
+  "version": "1.0.0",
+  "description": "This is a tinder for developers",
+  "main": "app.js",
+  "scripts": {
+    "start":"node src/app.js",
+    "dev":"nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Node",
+    "js",
+    "Backend"
+  ],
+  "author": "Harika Balaga",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
