@@ -3,6 +3,7 @@ const express=require('express');
 const app=express();
 const { userAuth } =require('../middlewares/userAuth');
 const {adminAuth} =require('../middlewares/adminAuth');
+const { error } = require('console');
 app.use("/user/login",(req,res)=>{
     res.send("User logged in successfully");
 });
@@ -18,6 +19,23 @@ app.use("/admin/login",(req,res)=>{
 app.use("/admin",adminAuth,(req,res)=>{
     res.send("Admin authenticated successfully")
 })
+
+app.use("/",(err,req,res,next)=>{
+    if(err){
+       res.status(500).send("Something went wrong");
+    }
+})
+
+app.use("/getUserData",(req,res,next)=>{
+    // try{
+    throw new error("DNIFNNIDNIB");
+    res.send("User data sent");
+    // }
+    // catch(err){
+        // res.status(500).send("Oopss there is an error while showing content");
+    // }
+})
+
 
 
 // app.use("/test",(req,res)=>{
