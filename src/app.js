@@ -1,111 +1,35 @@
 const express=require('express');
 
 const app=express();
-const { userAuth } =require('../middlewares/userAuth');
-const {adminAuth} =require('../middlewares/adminAuth');
-const { error } = require('console');
-app.use("/user/login",(req,res)=>{
-    res.send("User logged in successfully");
-});
+const {User}=require("../src/models/user.js")
+const {connectDb}=require("../src/config/database.js");
+app.post('/signup', async(req,res)=>{
+    const user=new User({
+        firstName:"Rushi",
+        lastName:"Balaga",
+        emailId:"rushi@balaga.com",
+        password:"balagarushi"
 
-app.use("/user",userAuth,(req,res)=>{
-    res.send("User authenticated successfully");
-})
+    });
+    try{
+       await user.save();
+       res.send("Successfully signed up");
 
-app.use("/admin/login",(req,res)=>{
-    res.send("Admin logged in successfully");
-});
-
-app.use("/admin",adminAuth,(req,res)=>{
-    res.send("Admin authenticated successfully")
-})
-
-app.use("/",(err,req,res,next)=>{
-    if(err){
-       res.status(500).send("Something went wrong");
     }
-})
+    catch(e){
+        res.status(400).send("Error occured ",e.message);
+    }
 
-app.use("/getUserData",(req,res,next)=>{
-    // try{
-    throw new error("DNIFNNIDNIB");
-    res.send("User data sent");
-    // }
-    // catch(err){
-        // res.status(500).send("Oopss there is an error while showing content");
-    // }
-})
-
-
-
-// app.use("/test",(req,res)=>{
-//     res.send("This is test page");
-// })
-
-// app.get("/test",(req,res)=>{
-//     res.send("Get the data");
-// })
-
-// app.post('/test',(req,res)=>{
-//     res.send("Post the data");
-// })
-
-// app.delete('/test',(req,res)=>{
-//     res.send("Deleted successfully");
-// })
-
-// app.patch("/test",(req,res)=>{
-//     res.send("Path the data");
-// })
-
-// app.put("/test",(req,res)=>{
-//     res.send("put the data");
-// })
-
-// app.get("/user",[(req,res,next)=>{
-//     console.log("Hello world"); 
-//     // next();
-
-// },
-// (req,res,next)=>{
-//      console.log("Hello world");
-//     next();
-
-// },
-// (req,res,next)=>{
-//     console.log("Hello world");
-//     next();
-
-// }],
-// (req,res,next)=>{
-//     console.log("Hello world");
-//     res.send("4th conncetion");
-// }
-// )
-// // app.get("/user",(req,res)=>{
-// //     console.log(req.query);
-// //     res.send("sucessfull");
-// // })
-
-// // app.get("/user/:userId/:name",(req,res)=>{
-// //     console.log(req.params);
-// //     res.send("put the data");
-// // })
-// // app.get(/.*fly$/,(req,res)=>{
-// //     res.send("Put the data");
-// // })
-
-// app.get('/ab(de)+c',(req,res)=>{
-//     res.send("Executed");
-// })
-// app.get('/ab+c',(req,res)=>{
-//     res.send("Executed");
-// })
-
-// app.get('/ab?c',(req,res)=>{
-//     res.send("Executed");
-// })
-
-app.listen(7777,()=>{
-    console.log("server running successfully");
 });
+connectDb().then(()=>{
+    console.log("Connection established");
+    app.listen(7777,()=>{
+        console.log("server running on 7777...");
+     })
+})
+.catch((err)=>{
+    console.error("Error encountered while connecting to server")
+})
+
+
+
