@@ -3,17 +3,19 @@ const express=require('express');
 const app=express();
 const {User}=require("../src/models/user.js")
 const {connectDb}=require("../src/config/database.js");
-app.post('/signup', async(req,res)=>{
-    const user=new User({
-        firstName:"Rushi",
-        lastName:"Balaga",
-        emailId:"rushi@balaga.com",
-        password:"balagarushi"
 
-    });
+app.use(express.json());
+app.post('/signup', async(req,res)=>{
+    const userEmail=req.body.emailId;
     try{
-       await user.save();
-       res.send("Successfully signed up");
+       const users=await User.findOne({emailId:userEmail});
+       if(users.length===0){
+         res.status(404).send("No documents found");
+       }
+       else{
+              res.send(users);
+   
+       }
 
     }
     catch(e){
@@ -21,6 +23,17 @@ app.post('/signup', async(req,res)=>{
     }
 
 });
+
+app.get('/feed',async(req,res)=>{
+    try{
+        const users=await User.find({});
+        res.send(users);
+    }
+    catch(e){
+        res.status(500).send("No documents")
+    }
+    
+})
 connectDb().then(()=>{
     console.log("Connection established");
     app.listen(7777,()=>{
