@@ -20,5 +20,19 @@ const validateSignUp=(req)=>{
     }
 
 }
+const validUserProfileData=(req)=>{
+    const allowedFields= [
+        "firstName",
+        "lastName",
+        "about",
+        "photourl",
+        "skills",
+        "gender",
+        "age"
+    ];
+    const loggedUser=req.body;
+    const isValidUpdate=Object.keys(loggedUser).every((k)=>allowedFields.includes(k));
+    return isValidUpdate;
+}
 
-module.exports={ validateSignUp};
+module.exports={ validateSignUp,validUserProfileData};
