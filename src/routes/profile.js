@@ -13,8 +13,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
 })
 
 profileRouter.patch('/profile/edit',userAuth,async(req,res)=>{
-    console.log(req.body);
-    console.log(req.user);
+    
     try{
     const isValidateFields=await validUserProfileData(req);
    
@@ -31,6 +30,18 @@ profileRouter.patch('/profile/edit',userAuth,async(req,res)=>{
     }
     catch(e){
         res.status(400).send('Error : '+e.message);
+    }
+})
+
+profileRouter.patch('/profile/password',userAuth,async(req,res)=>{
+    try{
+    const user=req.user;
+    user.password=req.body.password;
+    user.save();
+    res.send("Password updated successfully");
+    }
+    catch(e){
+        res.status(400).send("Error : "+e.message);
     }
 })
 

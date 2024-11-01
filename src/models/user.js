@@ -47,11 +47,11 @@ const userSchema = mongoose.Schema({
     },
     gender: {
         type: String,
-        validate(value) {
-            if (!["male", "female", "other"].includes(value)) {
-                throw new Error("Invalid gender");
-            }
+        enum:{
+            values:["male","female","other"],
+            message:"{value} is not a valid gender"
         }
+       
     },
     skills: {
         type: [String],
@@ -74,7 +74,8 @@ const userSchema = mongoose.Schema({
 }, {
     timestamps: true,
 }
-)
+);
+userSchema.index({firstName:1},{lastName:1});
 userSchema.methods.getJWT = async function () {
     const user = this;
     const token = await jwt.sign({ _id: user._id }, "Tinder@WEB3", {
