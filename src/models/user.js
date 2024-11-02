@@ -54,8 +54,8 @@ const userSchema = mongoose.Schema({
        
     },
     skills: {
-        type: [String],
-
+        type: [String]
+      
     },
     photourl: {
         type: String,

@@ -8,10 +8,12 @@ authRouter.post('/signup', async (req, res) => {
     const data = req.body;
 
     try {
+        
         validateSignUp(req);
-        const { firstName, lastName, password, emailId } = data;
+        
+        const { firstName, lastName, password, emailId,photourl,about,skills,gender,age} = data;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ firstName, lastName, emailId, password: hashedPassword });
+        const user = new User({ firstName, lastName, emailId, password: hashedPassword,photourl,about,skills,gender,age });
         await user.save();
         res.status(201).send("User created successfully");
 
@@ -25,13 +27,17 @@ authRouter.post('/signup', async (req, res) => {
 
 authRouter.post('/login', async (req, res) => {
     try {
-
+        
         const { emailId, password } = req.body;
         const user = await User.findOne({ emailId: emailId });
+        console.log(req.body);
+        console.log(user);
         if (!user) {
             throw new Error("Invalid credentials");
         }
+        
         const isValid = await user.isvalidPassword(password);
+        console.log(isValid);
         if (!isValid) {
             throw new Error("Invalid credentials");
         }
