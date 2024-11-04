@@ -48,7 +48,7 @@ const userSchema = mongoose.Schema({
     gender: {
         type: String,
         enum:{
-            values:["male","female","other"],
+            values:["Male","Female","Other"],
             message:"{value} is not a valid gender"
         }
        
@@ -60,7 +60,7 @@ const userSchema = mongoose.Schema({
     photourl: {
         type: String,
         validate(value) {
-            if (validator.isURL(value)) {
+            if (!validator.isURL(value)) {
                 throw new Error("Invalid photurl");
             }
         }
