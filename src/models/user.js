@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+require("dotenv").config(); 
+
 const userSchema = mongoose.Schema({
     firstName: {
         type: String,
@@ -78,7 +80,7 @@ const userSchema = mongoose.Schema({
 userSchema.index({firstName:1},{lastName:1});
 userSchema.methods.getJWT = async function () {
     const user = this;
-    const token = await jwt.sign({ _id: user._id }, "Tinder@WEB3", {
+    const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: '7d'
     })
     return token;
