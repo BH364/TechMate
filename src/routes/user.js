@@ -3,7 +3,7 @@ const userRouter = express.Router();
 const {userAuth} = require('../middlewares/userAuth.js');
 const { ConnectionRequest } = require('../models/connectionRequest');
 const {User} = require('../models/user.js')
-const safe_fields= ["firstName"," lastName" ,"age", "about", "photourl", "gender","skills"];
+const safe_fields= ["firstName","lastName" ,"age", "about", "photourl", "gender","skills"];
 userRouter.get('/user/requests/recieved',userAuth,async (req,res)=>{
     try{ 
         const user=req.user;
@@ -39,6 +39,7 @@ userRouter.get('/user/requests/connections',userAuth,async (req,res)=>{
             }
             return row.fromUserId;
         });
+        const users= await User.findById()
         res.json({
             data
         });
