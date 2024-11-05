@@ -20,9 +20,7 @@ app.use("/",profileRouter);
 app.use("/",requestRouter);
 app.use("/",userRouter);
 connectDb().then(() => {
-    console.log("Connection established");
     app.listen(7777, () => {
-        console.log("server running on 7777...");
     })
 })
     .catch((err) => {
