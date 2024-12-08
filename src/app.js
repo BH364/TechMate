@@ -18,15 +18,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-app.use("/",authRouter);
-app.use("/",profileRouter);
-app.use("/",requestRouter);
-app.use("/",userRouter);
-app.use("/messages",messageRouter)
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send("Something went wrong!");
-});
+app.use("/auth", authRouter);
+app.use("/profile", profileRouter);
+app.use("/requests", requestRouter);
+app.use("/users", userRouter);
+app.use("/messages", messageRouter);
+
+
 connectDb().then(() => {
     server.listen(7777, () => {
         console.log("App is running on 7777")
