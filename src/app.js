@@ -34,5 +34,9 @@ connectDb().then(() => {
         console.error("Error encountered while connecting to server")
     })
 
+    app.use((req, res) => {
+        res.status(404).send("404: NOT_FOUND");
+      });
+
 
 
