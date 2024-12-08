@@ -1,5 +1,6 @@
 const express=require('express');
 const profileRouter=express.Router();
+const cloudinary=require('../lib/cloudinary.js')
 const { userAuth } = require('../middlewares/userAuth.js');
 const {validUserProfileData} =require('../utils/validate.js');
 profileRouter.get("/profile/view", userAuth, async (req, res) => {
@@ -21,7 +22,16 @@ profileRouter.patch('/profile/edit',userAuth,async(req,res)=>{
          throw new Error("Can't update some of these fields");
     }
     const loggedUser=req.user;
+
     Object.keys(req.body).forEach((k)=>{loggedUser[k]=req.body[k]});
+    if (req.body.photourl) {
+        // If it's an image URL, upload it to Cloudinary
+        const response = await cloudinary.uploader.upload(req.body.photourl, {
+            resource_type: 'image' // Ensures it's treated as an image
+        });
+        loggedUser.photourl = response.secure_url;
+    }
+
     await loggedUser.save();
     res.json({
         message:`${loggedUser . firstName} profile updated successfully.`,

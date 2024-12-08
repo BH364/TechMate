@@ -69,7 +69,7 @@ const userSchema = mongoose.Schema({
     },
     about: {
         type: String,
-        default: "Hello this is a default about"
+        
     }
 
 

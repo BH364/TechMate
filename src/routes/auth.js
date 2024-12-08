@@ -3,6 +3,7 @@ const authRouter=express.Router();
 const { User }= require('../models/user.js')
 const bcrypt = require("bcrypt");
 const { validateSignUp } = require('../utils/validate.js');
+const { userAuth } = require('../middlewares/userAuth.js');
 
 authRouter.post('/signup', async (req, res) => {
     const data = req.body;
@@ -19,7 +20,8 @@ authRouter.post('/signup', async (req, res) => {
         res.cookie('token', token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), httpOnly: true });
         res.status(201).json({
             message:"User created successfully",
-            data:savedUser
+            data:savedUser,
+            token:token
         });
 
     }
@@ -47,7 +49,7 @@ authRouter.post('/login', async (req, res) => {
         else {
             const token = await user.getJWT();
             res.cookie('token', token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), httpOnly: true });
-            res.send(user);
+            res.json({data:user,token:token});
 
         }
     }
@@ -64,5 +66,12 @@ authRouter.post('/logout',async (req,res)=>{
     });
     res.send("Logout successful");
 });
-
+authRouter.get('/auth/check',userAuth,async(req, res) => {
+    try {
+      res.status(200).json(req.user);
+    } catch (error) {
+      console.log("Error in checkAuth controller", error.message);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
 module.exports = authRouter;
