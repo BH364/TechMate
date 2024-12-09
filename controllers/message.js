@@ -1,5 +1,5 @@
-const { User } = require("../models/user");
-const { ConnectionRequest } = require("../models/connectionRequest");
+const { User } = require("../models/user.js");
+const { ConnectionRequest } = require("../models/connectionRequest.js");
 const {Message} = require('../models/message.js');
 const { getReceiverSocketId ,io} = require("../lib/socket.js");
 const safe_fields= ["firstName","lastName" ,"age", "about", "photourl", "gender","skills"];
