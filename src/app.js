@@ -29,14 +29,19 @@ app.options("*", cors(corsOptions)); // Handle preflight OPTIONS requests
 // Middleware for parsing JSON and cookies
 app.use(express.json());
 app.use(cookieParser());
-
+app.use((req, res, next) => {
+    console.log(`Incoming request: ${req.method} ${req.originalUrl}`);
+    next();
+});
 // Route handlers
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 app.use("/requests", requestRouter);
 app.use("/users", userRouter);
 app.use("/messages", messageRouter);
-
+app.get('/',(req,res)=>{
+    res.send("API working")
+})
 // Database connection and server initialization
 connectDb()
     .then(() => {
@@ -52,3 +57,5 @@ connectDb()
 app.use((req, res) => {
     res.status(404).json({ message: "404: NOT_FOUND" });
 });
+
+

@@ -25,6 +25,8 @@ const io = new Server(server, {
 });
 
 const userSocketMap = {};
+
+// Socket.IO event handlers
 io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
 
@@ -46,9 +48,12 @@ io.on("connection", (socket) => {
     });
 });
 
-// Start the Server
-server.listen(process.env.PORT || 7777, () => {
-    console.log(`Server running on port ${process.env.PORT || 7777}`);
-});
+// Prevent multiple server listens
+if (!module.parent) {
+    const PORT = process.env.PORT || 7777;
+    server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
 
 module.exports = { io, app, server };
